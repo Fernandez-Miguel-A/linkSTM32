@@ -147,6 +147,11 @@ int main(void)
 		}
 		j = 0;
 		for(; j< 10; j++){
+		  PORTA = j;         // 'i'  led
+		  Delay_ms(1000);
+		}
+		j = 0;
+		for(; j< 10; j++){
 		  PORTA = segment[j];         // 'i'  led
 		  Delay_ms(1000);
 		}
