@@ -21,7 +21,15 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "stdint.h"
+#include <ctype.h>
+#include "string.h"
 
+
+uint8_t segment[10]={  //125
+63,6,91,79,102,109,125,7,127,103
+};
+ 
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -42,6 +50,44 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+
+char txt3[] = "Lcd4bit:";
+char texto[] = "VIEJO PIC16F877A";     // Usando 'const' No muestra el texto
+char Txt[20];
+
+
+int res_=0;
+int retardo = 500; // en 'msecs' .0-> 65535
+char retardo_s[5];
+
+enum teclado_estado {E1, E2, E3, E4, Efin};
+uint8_t estado_teclado= E1;
+
+#define    LED1    HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_7)  
+#define    LED2    HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8)  
+#define    but     HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10)
+//  == GPIO_PIN_SET
+
+#define 	Delay_ms		HAL_Delay
+#define 	Retardo_ms		HAL_Delay
+
+
+
+int StrToInt(char *s)
+{
+    int i=0, sal=0;
+    while(s[i]!=0){
+        sal = sal*10 + (s[i++]-48);   
+    }
+    return sal;
+}          
+/*void Retardo_ms(int n)
+{
+     int i;
+     for(i=0; i<n; i++){
+         Delay_1ms();
+     }
+}*/
 
 /* USER CODE END PV */
 
