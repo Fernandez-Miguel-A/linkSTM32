@@ -68,8 +68,10 @@ uint8_t estado_teclado= E1;
 #define    but     		HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) // PUERTOA
 //  == GPIO_PIN_SET
 
-#define 	Delay_ms		HAL_Delay
+#define 	Delay_ms		  HAL_Delay
 #define 	Retardo_ms		HAL_Delay
+#define 	__delay_ms		HAL_Delay
+
 
 
 
@@ -88,6 +90,23 @@ int StrToInt(char *s)
          Delay_1ms();
      }
 }*/
+
+void retardo_teclado(uint32_t Delay)
+{
+  uint32_t tickstart = HAL_GetTick();
+  uint32_t wait = Delay;
+
+  /* Add a freq to guarantee minimum wait */
+  if (wait < HAL_MAX_DELAY)
+  {
+    wait += (uint32_t)(uwTickFreq);
+  }
+
+  while ((HAL_GetTick() - tickstart) < wait)
+  {
+  }
+}
+
 
 /* USER CODE END PV */
 
