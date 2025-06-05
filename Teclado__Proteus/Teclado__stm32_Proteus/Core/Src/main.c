@@ -63,9 +63,9 @@ char retardo_s[5];
 enum teclado_estado {E1, E2, E3, E4, Efin};
 uint8_t estado_teclado= E1;
 
-#define    LED1    HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_7)  
-#define    LED2    HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8)  
-#define    but     HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10)
+#define    LED1(x)    GPIOB->ODR |= x<<7 // PUERTOB
+#define    LED2(x)    GPIOB->ODR |= x<<8 // PUERTOB
+#define    but     		HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) // PUERTOA
 //  == GPIO_PIN_SET
 
 #define 	Delay_ms		HAL_Delay
@@ -111,7 +111,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+    char c, tecla;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -120,7 +120,21 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+      
+    //Keypad_Init();										// PUERTOA
+    
+    Lcd_Init();                        // Initialize Lcd
+    Delay_ms(15);
+	
+    Lcd_Cmd(_LCD_CLEAR);               // Clear display
+    Lcd_Cmd(_LCD_CURSOR_OFF);          // Cursor off
+    
+    
+    Lcd_Set_Cursor(1,1);
+    Lcd_Write_String(txt3);                 // Write text in first row 
+		Lcd_Set_Cursor(2,1);
+    Lcd_Write_String("PIC  es la onda!");                 // Write text in first row
+    c = '0';
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -143,6 +157,111 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+		
+		do {  
+           kp = Keypad_Key_Click();
+           if(!isdigit(c)){// && (atoi(c)>9)){
+                 c = '0'; 
+           }
+					 Lcd_Set_Cursor(1, 16);
+           Lcd_Write_Char(c++);
+           
+           
+           if (but == 0){
+						  Lcd_Set_Cursor(2,1);
+              Lcd_Write_String("                ");
+              IntToStr(retardo, Txt);
+						  Lcd_Set_Cursor(2, 1);
+              Lcd_Write_String(2,1,Txt);
+           } 
+            LED1(1);
+            Retardo_ms(retardo);     //retardo
+            LED1(0);         
+            Retardo_ms(retardo);     //retardo
+        } while(!kp);
+         
+        LED2(1);
+        Delay_ms(500);     //retardo
+        LED2(0);           
+        Delay_ms(500);     //retardo
+        
+        switch (kp) {
+          //case 10: kp = 42; break;  // '*'   // Uncomment this block for keypad4x3
+          //case 11: kp = 48; break;  // '0'   
+          //case 12: kp = 35; break;  // '#'
+          //default: kp += 48;
+                                            
+          case  1: tecla = 55; break; // 7
+          case  2: tecla = 56; break; // 8
+          case  3: tecla = 57; break; // 9
+          case  4: tecla = '%'; break; // A
+          case  5: tecla = 52; break; // 4
+          case  6: tecla = 53; break; // 5
+          case  7: tecla = 54; break; // 6
+          case  8: tecla = '*'; break; // B
+          case  9: tecla = 49; break; // 1        // Uncomment this block for keypad4x4
+          case 10: tecla = 50; break; // 2
+          case 11: tecla = 51; break; // 3
+          case 12: tecla = '-'; break; // C
+          case 13: tecla = 'C'; break; // *
+          case 14: tecla = 48; break; // 0
+          case 15: tecla = '='; break; // #
+          case 16: tecla = '+'; break; // D
+
+        }       
+        
+        //Lcd_Chr(1,9,tecla);
+        if(tecla == '='){
+            if(retardo_s[0] != 0)
+                retardo = StrToInt(retardo_s);
+                
+        }
+        if(!isdigit(tecla)){
+            estado_teclado = Efin;
+        }
+                          
+        switch(estado_teclado){
+            case E1: retardo_s[0] = tecla;
+                     retardo_s[1] = 0;
+                     Lcd_Set_Cursor(1,11);
+										 Lcd_Write_Char(tecla);
+                     estado_teclado = E2;
+                     Delay_ms(400);
+                     break;          
+            case E2: retardo_s[1] = tecla; 
+                     retardo_s[2] = 0;
+                     Lcd_Set_Cursor(1,12);
+										 Lcd_Write_Char(tecla); 
+                     estado_teclado = E3;
+                     Delay_ms(400); 
+                     break;
+            case E3: retardo_s[2] = tecla;
+                     retardo_s[3] = 0;
+                     Lcd_Set_Cursor(1,13);
+										 Lcd_Write_Char(tecla); 
+                     estado_teclado = E4;
+                     Delay_ms(400);
+                     break;
+            case E4: retardo_s[3] = tecla;
+                     retardo_s[4] = 0;
+                     Lcd_Set_Cursor(1,14);
+										 Lcd_Write_Char(tecla);
+                     estado_teclado = Efin;
+                     Delay_ms(400);
+                     break;
+            case Efin:
+                     Lcd_Out(1,11, "    ");
+                     //retardo = StrToInt(retardo_s); 
+                     retardo_s[0] = 0;
+                     Delay_ms(600);
+                     estado_teclado = E1;
+                     break;
+        } 
+        
+//        Lcd_Out(2, 9, retardo_s);   
+     
+		
+		
   }
   /* USER CODE END 3 */
 }
