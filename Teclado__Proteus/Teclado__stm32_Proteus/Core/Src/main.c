@@ -21,6 +21,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
+#include "lcd.h"
+
 #include "stdint.h"
 #include <ctype.h>
 #include "string.h"
@@ -145,8 +148,8 @@ int main(void)
     Lcd_Init();                        // Initialize Lcd
     Delay_ms(15);
 	
-    Lcd_Cmd(_LCD_CLEAR);               // Clear display
-    Lcd_Cmd(_LCD_CURSOR_OFF);          // Cursor off
+    Lcd_Clear(); //Lcd_Cmd(_LCD_CLEAR);               // Clear display
+    Lcd_NoBlink(); //Lcd_Cmd(_LCD_CURSOR_OFF);          // Cursor off
     
     
     Lcd_Set_Cursor(1,1);
@@ -187,11 +190,11 @@ int main(void)
            
            
            if (but == 0){
-						  Lcd_Set_Cursor(2,1);
-              Lcd_Write_String("                ");
-              IntToStr(retardo, Txt);
-						  Lcd_Set_Cursor(2, 1);
-              Lcd_Write_String(2,1,Txt);
+							 Lcd_Set_Cursor(2,1);
+               Lcd_Write_String("                ");
+               sprintf(Txt, "%i", retardo);
+							 Lcd_Set_Cursor(2, 1);
+               Lcd_Write_String(2,1,Txt);
            } 
             LED1(1);
             Retardo_ms(retardo);     //retardo
@@ -205,11 +208,6 @@ int main(void)
         Delay_ms(500);     //retardo
         
         switch (kp) {
-          //case 10: kp = 42; break;  // '*'   // Uncomment this block for keypad4x3
-          //case 11: kp = 48; break;  // '0'   
-          //case 12: kp = 35; break;  // '#'
-          //default: kp += 48;
-                                            
           case  1: tecla = 55; break; // 7
           case  2: tecla = 56; break; // 8
           case  3: tecla = 57; break; // 9
@@ -269,7 +267,8 @@ int main(void)
                      Delay_ms(400);
                      break;
             case Efin:
-                     Lcd_Out(1,11, "    ");
+                     Lcd_Set_Cursor(1,11);
+                     Lcd_Write_String("    ");
                      //retardo = StrToInt(retardo_s); 
                      retardo_s[0] = 0;
                      Delay_ms(600);
