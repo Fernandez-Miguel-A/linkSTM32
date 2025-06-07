@@ -68,10 +68,11 @@ char kp;
 enum teclado_estado {E1, E2, E3, E4, Efin};
 uint8_t estado_teclado= E1;
 
-#define    LED1(x)    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, x) // PUERTOB
-#define    LED2(x)    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, x) // PUERTOB
+#define    LED1(x)    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, (x == 1) ? (GPIO_PIN_SET) : (GPIO_PIN_RESET)) // PUERTOB
+#define    LED2(x)    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, (x == 1) ? (GPIO_PIN_SET) : (GPIO_PIN_RESET)) // PUERTOB
 #define    but     		HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) // PUERTOA
 //  == GPIO_PIN_SET
+
 
 #define 	Delay_ms		  HAL_Delay
 #define 	Retardo_ms		HAL_Delay
@@ -158,15 +159,6 @@ int main(void)
     Lcd_Init();                        // Initialize Lcd
     Delay_ms(15);
 	
-    Lcd_Clear(); //Lcd_Cmd(_LCD_CLEAR);               // Clear display
-    Lcd_NoBlink(); //Lcd_Cmd(_LCD_CURSOR_OFF);          // Cursor off
-    
-    
-    Lcd_Set_Cursor(1,1);
-    Lcd_Write_String(txt3);                 // Write text in first row 
-		Lcd_Set_Cursor(2,1);
-    Lcd_Write_String("PIC  es la onda!");                 // Write text in first row
-    c = '0';
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -180,13 +172,40 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
-	HAL_TIM_Base_Start(&htim4);
+	  HAL_TIM_Base_Start(&htim4);
+	
+    Lcd_Clear(); //Lcd_Cmd(_LCD_CLEAR);               // Clear display
+    Lcd_NoBlink(); //Lcd_Cmd(_LCD_CURSOR_OFF);          // Cursor off
+    
+    
+    Lcd_Set_Cursor(1,1);
+    Lcd_Write_String(txt3);                 // Write text in first row 
+		Lcd_Set_Cursor(2,1);
+    Lcd_Write_String("PIC  es la onda!");                 // Write text in first row
+    c = '0';
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+		/*
+		LED1(1);
+		HAL_Delay(500);
+		LED1(0);
+		LED2(1);
+		HAL_Delay(500);
+		LED2(0);
+		HAL_Delay(500);*/
+		
+		/*
+		GPIOB->ODR = 0x01;
+		HAL_Delay(500);
+		GPIOB->ODR = 0x1<<2;
+		HAL_Delay(500);
+		GPIOB->ODR= 0x0;
+		*/
+		
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
