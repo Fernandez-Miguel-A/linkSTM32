@@ -68,8 +68,8 @@ char kp;
 enum teclado_estado {E1, E2, E3, E4, Efin};
 uint8_t estado_teclado= E1;
 
-#define    LED1(x)    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, x) // PUERTOB
-#define    LED2(x)    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, x) // PUERTOB
+#define    LED1(x)    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, x) // PUERTOB
+#define    LED2(x)    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, x) // PUERTOB
 #define    but     		HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) // PUERTOA
 //  == GPIO_PIN_SET
 
@@ -391,9 +391,14 @@ static void MX_GPIO_Init(void)
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, LED1_Pin|LED2_Pin|D4_Pin|D5_Pin
+                          |D6_Pin|D7_Pin|RS_Pin|EN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : PA0 PA1 PA2 PA3 */
   GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3;
@@ -401,6 +406,23 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PA4 PA5 PA6 PA7
+                           BOTON_Pin */
+  GPIO_InitStruct.Pin = GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7
+                          |BOTON_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : LED1_Pin LED2_Pin D4_Pin D5_Pin
+                           D6_Pin D7_Pin RS_Pin EN_Pin */
+  GPIO_InitStruct.Pin = LED1_Pin|LED2_Pin|D4_Pin|D5_Pin
+                          |D6_Pin|D7_Pin|RS_Pin|EN_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 

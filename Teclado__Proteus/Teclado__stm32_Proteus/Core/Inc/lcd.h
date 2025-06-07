@@ -3,12 +3,12 @@
 
 #define USE_CGRAM_LCD
 
-#define RS(x) 		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, x)
-#define EN(x) 		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, x)
-#define D4(x) 		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, x)
-#define D5(x) 		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, x)
-#define D6(x) 		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2, x)
-#define D7(x) 		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, x)
+#define RS(x) 		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, x)
+#define EN(x) 		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, x)
+#define D4(x) 		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, x)
+#define D5(x) 		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, x)
+#define D6(x) 		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, x)
+#define D7(x) 		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, x)
 /*
 #define RS_DIR TRISDbits.TRISD2
 #define EN_DIR TRISDbits.TRISD3
