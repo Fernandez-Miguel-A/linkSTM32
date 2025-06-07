@@ -51,6 +51,7 @@ uint8_t segment[10]={  //125
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+TIM_HandleTypeDef htim4;
 
 /* USER CODE BEGIN PV */
 
@@ -62,12 +63,13 @@ char Txt[20];
 int res_=0;
 int retardo = 500; // en 'msecs' .0-> 65535
 char retardo_s[5];
+char kp;
 
 enum teclado_estado {E1, E2, E3, E4, Efin};
 uint8_t estado_teclado= E1;
 
-#define    LED1(x)    GPIOB->ODR |= x<<7 // PUERTOB
-#define    LED2(x)    GPIOB->ODR |= x<<8 // PUERTOB
+#define    LED1(x)    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, x) // PUERTOB
+#define    LED2(x)    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, x) // PUERTOB
 #define    but     		HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) // PUERTOA
 //  == GPIO_PIN_SET
 
@@ -94,6 +96,13 @@ int StrToInt(char *s)
      }
 }*/
 
+void __delay_us(int delay)
+{
+		__HAL_TIM_SetCounter(&htim4, 0);
+    while(__HAL_TIM_GET_COUNTER(&htim4) < delay);
+}
+
+
 void retardo_teclado(uint32_t Delay)
 {
   uint32_t tickstart = HAL_GetTick();
@@ -116,6 +125,7 @@ void retardo_teclado(uint32_t Delay)
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_TIM4_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -168,8 +178,9 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
-
+	HAL_TIM_Base_Start(&htim4);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -181,7 +192,7 @@ int main(void)
     /* USER CODE BEGIN 3 */
 		
 		do {  
-           kp = Keypad_Key_Click();
+           kp = 1; //Keypad_Key_Click();
            if(!isdigit(c)){// && (atoi(c)>9)){
                  c = '0'; 
            }
@@ -194,7 +205,7 @@ int main(void)
                Lcd_Write_String("                ");
                sprintf(Txt, "%i", retardo);
 							 Lcd_Set_Cursor(2, 1);
-               Lcd_Write_String(2,1,Txt);
+               Lcd_Write_String(Txt);
            } 
             LED1(1);
             Retardo_ms(retardo);     //retardo
@@ -318,6 +329,51 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+}
+
+/**
+  * @brief TIM4 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM4_Init(void)
+{
+
+  /* USER CODE BEGIN TIM4_Init 0 */
+
+  /* USER CODE END TIM4_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM4_Init 1 */
+
+  /* USER CODE END TIM4_Init 1 */
+  htim4.Instance = TIM4;
+  htim4.Init.Prescaler = 8-1;
+  htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim4.Init.Period = 0xffff-1;
+  htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim4, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim4, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM4_Init 2 */
+
+  /* USER CODE END TIM4_Init 2 */
+
 }
 
 /**
