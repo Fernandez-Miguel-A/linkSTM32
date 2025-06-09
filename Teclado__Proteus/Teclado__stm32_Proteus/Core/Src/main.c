@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include "lcd.h"
+#include "keypadmodify.h"
 
 #include "stdint.h"
 #include <ctype.h>
@@ -118,6 +119,12 @@ void __delay_us0(int32_t delay)
 {
 		HAL_Delay(1);
 }
+
+/*
+void Keypad_Key_Click(void)
+{
+    HAL_GPIO_ReadPin(GPIOA, 
+}*/
 
 
 void retardo_teclado(uint32_t Delay)
