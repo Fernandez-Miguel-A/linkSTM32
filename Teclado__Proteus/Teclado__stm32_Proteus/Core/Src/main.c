@@ -98,10 +98,25 @@ int StrToInt(char *s)
      }
 }*/
 
-void __delay_us(int delay)
+void __delay_us2(int32_t delay)
 {
-		__HAL_TIM_SetCounter(&htim4, 0);
-    while(__HAL_TIM_GET_COUNTER(&htim4) < delay);
+		uint16_t tickstart;
+		//__HAL_TIM_SetCounter(&htim4, 0);
+		tickstart = __HAL_TIM_GET_COUNTER(&htim4);
+    while((__HAL_TIM_GET_COUNTER(&htim4)-tickstart) < delay);
+}
+
+
+void __delay_us(int32_t delay)
+{
+		volatile uint32_t i;
+		for(i= 5*delay; i!=0; i--);
+	
+}
+
+void __delay_us0(int32_t delay)
+{
+		HAL_Delay(1);
 }
 
 
@@ -185,22 +200,23 @@ int main(void)
 		Lcd_Set_Cursor(2,1);
     Lcd_Write_String("PIC  es la onda!");                 // Write text in first row
     c = '0';
-
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		/*
+		
+		/*while(1){
 		LED1(1);
-		HAL_Delay(500);
+		__delay_us(5000);
 		LED1(0);
 		LED2(1);
-		HAL_Delay(500);
+		__delay_ms(5);
 		LED2(0);
-		HAL_Delay(500);*/
-		
+		__delay_us(5000);
+	}*/
 		/*
 		GPIOB->ODR = 0x01;
 		HAL_Delay(500);
@@ -221,14 +237,14 @@ int main(void)
 				Lcd_Set_Cursor(1, 16);
 				Lcd_Write_Char(c++);
 
-
+/*
 				if (but == 0){
 					 Lcd_Set_Cursor(2,1);
 					 Lcd_Write_String("                ");
 					 sprintf(Txt, "%i", retardo);
 					 Lcd_Set_Cursor(2, 1);
 					 Lcd_Write_String(Txt);
-				} 
+				}*/ 
         LED1(1);
         Retardo_ms(retardo);     //retardo
         LED1(0);         
