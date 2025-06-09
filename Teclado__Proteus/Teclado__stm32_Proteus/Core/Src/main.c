@@ -265,26 +265,7 @@ int main(void)
 		Delay_ms(500);     //retardo
 		LED2(0);           
 		Delay_ms(500);     //retardo
-        /*
-		switch (kp) {
-          case  1: tecla = 55; break; // 7
-          case  2: tecla = 56; break; // 8
-          case  3: tecla = 57; break; // 9
-          case  4: tecla = '%'; break; // A
-          case  5: tecla = 52; break; // 4
-          case  6: tecla = 53; break; // 5
-          case  7: tecla = 54; break; // 6
-          case  8: tecla = '*'; break; // B
-          case  9: tecla = 49; break; // 1        // Uncomment this block for keypad4x4
-          case 10: tecla = 50; break; // 2
-          case 11: tecla = 51; break; // 3
-          case 12: tecla = '-'; break; // C
-          case 13: tecla = 'C'; break; // *
-          case 14: tecla = 48; break; // 0
-          case 15: tecla = '='; break; // #
-          case 16: tecla = '+'; break; // D
-
-		}       */
+        
 				tecla = kp;
         
         //Lcd_Chr(1,9,tecla);
@@ -335,7 +316,6 @@ int main(void)
                      estado_teclado = E1;
                      break;
         }
-				Delay_ms(5000);
         
 //        Lcd_Out(2, 9, retardo_s);   
      
