@@ -420,6 +420,16 @@
               <FileType>1</FileType>
               <FilePath>../Core/Src/stm32f1xx_hal_msp.c</FilePath>
             </File>
+            <File>
+              <FileName>keypadmodify.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Core\Inc\keypadmodify.h</FilePath>
+            </File>
+            <File>
+              <FileName>keypadmodify.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\keypadmodify.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

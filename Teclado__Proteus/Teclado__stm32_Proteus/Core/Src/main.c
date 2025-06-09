@@ -65,6 +65,7 @@ int res_=0;
 int retardo = 500; // en 'msecs' .0-> 65535
 char retardo_s[5];
 char kp;
+char pulsador_kp;
 
 enum teclado_estado {E1, E2, E3, E4, Efin};
 uint8_t estado_teclado= E1;
@@ -238,7 +239,7 @@ int main(void)
     /* USER CODE BEGIN 3 */
 		
 		do {  
-				kp = 0; //Keypad_Key_Click();
+				kp = Keypad_Get_Char();
 				if(!isdigit(c)){// && (atoi(c)>9)){
 						 c = '0'; 
 				}
