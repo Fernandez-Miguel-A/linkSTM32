@@ -2,9 +2,9 @@
 //#include "key_jorge.h"
 
 char val_key;
-const char keys[4][4] = {{'1','2','3','%'},
+const char keys[4][4] = {{'7','8','9','%'},
                          {'4','5','6','*'},
-                         {'7','8','9','-'},
+                         {'1','2','3','-'},
                          {'C','0','=','+'}};
 
 char Keypad_Get_Char(void)
