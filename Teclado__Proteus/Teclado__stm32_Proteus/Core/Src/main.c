@@ -64,7 +64,7 @@ char Txt[20];
 int res_=0;
 int retardo = 500; // en 'msecs' .0-> 65535
 char retardo_s[5];
-char kp;
+char kp, tecla;
 char pulsador_kp;
 
 enum teclado_estado {E1, E2, E3, E4, Efin};
@@ -168,7 +168,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-    char c, tecla;
+    char c;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -217,23 +217,6 @@ int main(void)
   while (1)
   {
 		
-		/*while(1){
-		LED1(1);
-		__delay_us(5000);
-		LED1(0);
-		LED2(1);
-		__delay_ms(5);
-		LED2(0);
-		__delay_us(5000);
-	}*/
-		/*
-		GPIOB->ODR = 0x01;
-		HAL_Delay(500);
-		GPIOB->ODR = 0x1<<2;
-		HAL_Delay(500);
-		GPIOB->ODR= 0x0;
-		*/
-		
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -243,12 +226,13 @@ int main(void)
 				if(!isdigit(c)){// && (atoi(c)>9)){
 						 c = '0'; 
 				}
-				Lcd_Set_Cursor(1, 16);
+				Lcd_Set_Cursor(1, 15);
 				Lcd_Write_Char(kp);
-				//Lcd_Write_Char(c++);
+				Lcd_Set_Cursor(1, 16);
+				Lcd_Write_Char(c++);
 
 
-				if (but == 0){
+				if (but == 0){// ENTRA aca  SIN Pulsar  el boton.
 					 Lcd_Set_Cursor(2,1);
 					 Lcd_Write_String("                ");
 					 sprintf(Txt, "%i", retardo);
@@ -266,58 +250,58 @@ int main(void)
 		LED2(0);           
 		Delay_ms(500);     //retardo
         
-				tecla = kp;
+		tecla = kp;
+		
+		//Lcd_Chr(1,9,tecla);
+		if(tecla == '='){
+				if(retardo_s[0] != 0)
+						retardo = StrToInt(retardo_s);
+						
+		}
+		if(!isdigit(tecla)){
+				estado_teclado = Efin;
+		}
+											
+		switch(estado_teclado){
+				case E1: retardo_s[0] = tecla;
+								 retardo_s[1] = 0;
+								 Lcd_Set_Cursor(1,11);
+								 Lcd_Write_Char(tecla);
+								 estado_teclado = E2;
+								 Delay_ms(400);
+								 break;          
+				case E2: retardo_s[1] = tecla; 
+								 retardo_s[2] = 0;
+								 Lcd_Set_Cursor(1,12);
+								 Lcd_Write_Char(tecla); 
+								 estado_teclado = E3;
+								 Delay_ms(400); 
+								 break;
+				case E3: retardo_s[2] = tecla;
+								 retardo_s[3] = 0;
+								 Lcd_Set_Cursor(1,13);
+								 Lcd_Write_Char(tecla); 
+								 estado_teclado = E4;
+								 Delay_ms(400);
+								 break;
+				case E4: retardo_s[3] = tecla;
+								 retardo_s[4] = 0;
+								 Lcd_Set_Cursor(1,14);
+								 Lcd_Write_Char(tecla);
+								 estado_teclado = Efin;
+								 Delay_ms(400);
+								 break;
+				case Efin:
+								 Lcd_Set_Cursor(1,11);
+								 Lcd_Write_String("    ");
+								 //retardo = StrToInt(retardo_s); 
+								 retardo_s[0] = 0;
+								 Delay_ms(600);
+								 estado_teclado = E1;
+								 break;
+		}
         
-        //Lcd_Chr(1,9,tecla);
-        if(tecla == '='){
-            if(retardo_s[0] != 0)
-                retardo = StrToInt(retardo_s);
-                
-        }
-        if(!isdigit(tecla)){
-            estado_teclado = Efin;
-        }
-                          
-        switch(estado_teclado){
-            case E1: retardo_s[0] = tecla;
-                     retardo_s[1] = 0;
-                     Lcd_Set_Cursor(1,11);
-										 Lcd_Write_Char(tecla);
-                     estado_teclado = E2;
-                     Delay_ms(400);
-                     break;          
-            case E2: retardo_s[1] = tecla; 
-                     retardo_s[2] = 0;
-                     Lcd_Set_Cursor(1,12);
-										 Lcd_Write_Char(tecla); 
-                     estado_teclado = E3;
-                     Delay_ms(400); 
-                     break;
-            case E3: retardo_s[2] = tecla;
-                     retardo_s[3] = 0;
-                     Lcd_Set_Cursor(1,13);
-										 Lcd_Write_Char(tecla); 
-                     estado_teclado = E4;
-                     Delay_ms(400);
-                     break;
-            case E4: retardo_s[3] = tecla;
-                     retardo_s[4] = 0;
-                     Lcd_Set_Cursor(1,14);
-										 Lcd_Write_Char(tecla);
-                     estado_teclado = Efin;
-                     Delay_ms(400);
-                     break;
-            case Efin:
-                     Lcd_Set_Cursor(1,11);
-                     Lcd_Write_String("    ");
-                     //retardo = StrToInt(retardo_s); 
-                     retardo_s[0] = 0;
-                     Delay_ms(600);
-                     estado_teclado = E1;
-                     break;
-        }
-        
-//        Lcd_Out(2, 9, retardo_s);   
+//    Lcd_Out(2, 9, retardo_s);   
      
 		
 		
