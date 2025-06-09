@@ -4,7 +4,7 @@
 #define 	__delay_ms		HAL_Delay
 
 
-extern void __delay_us(int delay);
+extern void __delay_us(int32_t delay);
 
 
 void Lcd_Port(char a)
