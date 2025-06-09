@@ -170,11 +170,6 @@ int main(void)
 
   /* USER CODE BEGIN Init */
       
-    //Keypad_Init();										// PUERTOA
-    
-    Lcd_Init();                        // Initialize Lcd
-    Delay_ms(15);
-	
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -189,8 +184,14 @@ int main(void)
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
 	  HAL_TIM_Base_Start(&htim4);
+		
+		
+    //Keypad_Init();										// PUERTOA
+    
+    Lcd_Init();                        // Initialize Lcd
+    Delay_ms(15);
 	
-		HAL_Delay(500);
+	
     Lcd_Clear(); //Lcd_Cmd(_LCD_CLEAR);               // Clear display
     Lcd_NoBlink(); //Lcd_Cmd(_LCD_CURSOR_OFF);          // Cursor off
     
@@ -237,14 +238,14 @@ int main(void)
 				Lcd_Set_Cursor(1, 16);
 				Lcd_Write_Char(c++);
 
-/*
+
 				if (but == 0){
 					 Lcd_Set_Cursor(2,1);
 					 Lcd_Write_String("                ");
 					 sprintf(Txt, "%i", retardo);
 					 Lcd_Set_Cursor(2, 1);
 					 Lcd_Write_String(Txt);
-				}*/ 
+				} 
         LED1(1);
         Retardo_ms(retardo);     //retardo
         LED1(0);         
