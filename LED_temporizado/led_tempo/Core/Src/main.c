@@ -138,6 +138,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
     
 	  HAL_TIM_Base_Start(&htim4);
+		__HAL_TIM_SetCounter(&htim4, 0);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -151,17 +152,22 @@ int main(void)
 	   i = 0;
 		for(; i< 8; i++){
 		  PORTA = 1<<i;         // 'i'  led
-		  Delay_ms(1000);
-		}
+		  Delay_ms(1000);    													//Retardo 1 seg
+		}/*
 		j = 0;
 		for(; j< 10; j++){
 		  PORTA = j;         // 'i'  led
 		  Delay_ms(1000);
+		}*/
+		j = 0;
+		for(; j< 10; j++){
+		  PORTA = segment[j];         // 'i'  led
+		  for(i=0; i<1000; i++) __delay_us2(1000);    //Retardo 1 seg
 		}
 		j = 0;
 		for(; j< 10; j++){
 		  PORTA = segment[j];         // 'i'  led
-		  Delay_ms(1000);
+		  for(i=0; i<1000; i++) __delay_us(1000);    //Retardo 1 seg
 		}
   }
   /* USER CODE END 3 */
