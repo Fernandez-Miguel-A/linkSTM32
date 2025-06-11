@@ -100,7 +100,7 @@ int StrToInt(char *s)
      }
 }*/
 
-void __delay_us2(int32_t delay)
+void __delay_us(int32_t delay)
 {
 		uint16_t tickstart;
 		//__HAL_TIM_SetCounter(&htim4, 0);
@@ -109,7 +109,7 @@ void __delay_us2(int32_t delay)
 }
 
 
-void __delay_us(int32_t delay)
+void __delay_us2(int32_t delay)
 {
 		volatile uint32_t i;
 		for(i= 5*delay; i!=0; i--);
@@ -191,7 +191,9 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
+	
 	  HAL_TIM_Base_Start(&htim4);
+		__HAL_TIM_SetCounter(&htim4, 0);
 		
 		
     //Keypad_Init();										// PUERTOA
@@ -232,13 +234,13 @@ int main(void)
 				Lcd_Write_Char(c++);
 
 
-				if (but == 0){// ENTRA aca  SIN Pulsar  el boton.
+				/*if (but == 0){// ENTRA aca  SIN Pulsar  el boton.
 					 Lcd_Set_Cursor(2,1);
 					 Lcd_Write_String("                ");
 					 sprintf(Txt, "%i", retardo);
 					 Lcd_Set_Cursor(2, 1);
 					 Lcd_Write_String(Txt);
-				} 
+				} */
         LED1(1);
         Retardo_ms(retardo);     //retardo
         LED1(0);         
