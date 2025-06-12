@@ -96,6 +96,9 @@ void __delay_us0(int32_t delay)
 #define     PORTA			GPIOA->ODR
 #define 	PORTA2(x)		HAL_GPIO_WritePin(GPIOA, x, GPIO_PIN_SET);
 
+#define    _7SEGMENTOS(x)               (GPIOA->ODR = x | (GPIOA->ODR&0xFF80))
+
+
 
 
 uint8_t segment[10]={
@@ -149,9 +152,13 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 		
+
+		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, GPIO_PIN_SET); //GPIO_PIN_7
+		HAL_Delay(500);
 	   i = 0;
 		for(; i< 8; i++){
-		  PORTA = 1<<i;         // 'i'  led
+		  //PORTA = 1<<i;         // 'i'  led
+			_7SEGMENTOS(1<<i);
 		  Delay_ms(1000);    													//Retardo 1 seg
 		}/*
 		j = 0;
@@ -161,9 +168,10 @@ int main(void)
 		}*/
 		j = 0;
 		for(; j< 10; j++){
-		  PORTA = segment[j];         // 'i'  led
+		  _7SEGMENTOS(segment[j]);         // 'i'  led; PORTA = segment[j];
 		  for(i=0; i<1000; i++) __delay_us2(1000);    //Retardo 1 seg
 		}
+		Delay_ms(500);
 		j = 0;
 		for(; j< 10; j++){
 		  PORTA = segment[j];         // 'i'  led
