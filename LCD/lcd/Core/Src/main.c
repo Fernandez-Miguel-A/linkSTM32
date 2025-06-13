@@ -146,10 +146,6 @@ int main(void)
 		
 		HAL_Delay(1500);
 		Lcd_Clear();
-    Lcd_Set_Cursor(1,1);
-		Lcd_Write_String("Char CG: ");
-		Lcd_Write_Char(0);
-		Lcd_Write_Char(1);
 		
   /* USER CODE END 2 */
 
