@@ -1,5 +1,16 @@
 #include "main.h"
 //#include "key_jorge.h"
+/*
+C1->GPIOA[0](GPIO_PULLUP)
+C2->GPIOA[1](GPIO_PULLUP)
+C3->GPIOA[2](GPIO_PULLUP)
+C4->GPIOA[3](GPIO_PULLUP)
+
+R1->GPIOA[4]
+R2->GPIOA[5]
+R3->GPIOA[6]
+R4->GPIOA[7]
+*/
 
 char val_key;
 const char keys[4][4] = {{'7','8','9','%'},
