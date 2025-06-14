@@ -20,7 +20,7 @@ char Keypad_Get_Char(void)
         for (int c = 0; c < 4; c++) {
             if (!(HAL_GPIO_ReadPin(C_PORTS[c], C_PINS[c]))) {
                 HAL_Delay(4);
-                while ((HAL_GPIO_ReadPin(C_PORTS[c], C_PINS[c])));
+                //while (!(HAL_GPIO_ReadPin(C_PORTS[c], C_PINS[c])));
                 HAL_Delay(4);
                 val_key = keys[r][c];
             }
