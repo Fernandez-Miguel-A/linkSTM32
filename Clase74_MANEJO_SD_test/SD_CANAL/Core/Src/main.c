@@ -85,66 +85,68 @@ static void MX_USART1_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void SD_PRUEBA()
+void SD_PRUEBA(void)
 {
-	   //retardo inicializacion
-		HAL_Delay(500);
-		//detecta la memoria
-		if(f_mount(&memsd, "", 1) == FR_OK) uartx_write_text(&huart1, "memoria encontrada\r\n");
-		else uartx_write_text(&huart1, "memoria no encontrada\r\n");
+	//retardo inicializacion
+	HAL_Delay(500);
+
+	//detecta la memoria
+	if(f_mount(&memsd, "", 1) == FR_OK)
+		uartx_write_text(&huart1, "memoria encontrada\r\n");
+	else
+		uartx_write_text(&huart1, "memoria no encontrada\r\n");
 
 
-	     //formatea la memoria montada en FAT32
-		 //if(f_mkfs("", FM_FAT, 0, SD_BUFFER, _MAX_SS) != FR_OK)
+	//formatea la memoria montada en FAT32
+	//if(f_mkfs("", FM_FAT, 0, SD_BUFFER, _MAX_SS) != FR_OK)
 
-		//if(f_mkfs("", FM_FAT32, 0, SD_BUFFER, _MAX_SS) != FR_OK)
-				// uartx_write_text(&huart1, "NO FORMATEAD0\r\n");
+	//if(f_mkfs("", FM_FAT32, 0, SD_BUFFER, _MAX_SS) != FR_OK)
+	// uartx_write_text(&huart1, "NO FORMATEAD0\r\n");
 
 
-		//Abre un archivo sino lo crea
-		if(f_open(&archivo, "ARZ.txt", FA_OPEN_ALWAYS | FA_READ | FA_WRITE) != FR_OK)
+	//Abre un archivo sino lo crea
+	if(f_open(&archivo, "ARZ.txt", FA_OPEN_ALWAYS | FA_READ | FA_WRITE) != FR_OK)
 		uartx_write_text(&huart1, "Archivo no creado\r\n");
-		else uartx_write_text(&huart1, "Archivo creado\r\n");
+	else
+		uartx_write_text(&huart1, "Archivo creado\r\n");
 
-		//calcula espacio libre en la memoria
-		if(f_getfree("", &fre_clust, &pfs) != FR_OK);
+	//calcula espacio libre en la memoria
+	if(f_getfree("", &fre_clust, &pfs) != FR_OK);
 
-		totalSpace = (uint32_t)((pfs->n_fatent - 2) * pfs->csize * 0.5);
-		freeSpace = (uint32_t)(fre_clust * pfs->csize * 0.5);
+	totalSpace = (uint32_t)((pfs->n_fatent - 2) * pfs->csize * 0.5);
+	freeSpace = (uint32_t)(fre_clust * pfs->csize * 0.5);
 
-		//mira si si es menor de 1
-		if(freeSpace < 1)
-       uartx_write_text(&huart1, "Memoria llena\r\n");
+	//mira si si es menor de 1
+	if(freeSpace < 1)
+		uartx_write_text(&huart1, "Memoria llena\r\n");
 
-		//escribe algo en la memoria
-		f_puts("PROBANDO\r\n", &archivo);
+	//escribe algo en la memoria
+	f_puts("PROBANDO\r\n", &archivo);
+	f_puts("FUNCIONANDO\r\n", &archivo);
+	f_puts("mas datos\r\n", &archivo);
 
-		f_puts("FUNCIONANDO\r\n", &archivo);
-		f_puts("mas datos\r\n", &archivo);
-
-		//cierra archivo abierto
-		if(f_close(&archivo) != FR_OK)
+	//cierra archivo abierto
+	if(f_close(&archivo) != FR_OK)
 		uartx_write_text(&huart1, "DATOS  GUARDADOS");
 
-		//abre  un archivo para lectura
-		if(f_open(&archivo, "ARZ.txt", FA_READ) != FR_OK);
+	//abre  un archivo para lectura
+	if(f_open(&archivo, "ARZ.txt", FA_READ) != FR_OK);
 
-		//LEE LINEA POR LINEA
-		uartx_write_text(&huart1, "leido=");
-		while(f_gets(SD_BUFFER, sizeof(SD_BUFFER), &archivo))
-		{
-			sprintf(texto,"%s", SD_BUFFER);
-			uartx_write_text(&huart1, texto);
-			uartx_write_text(&huart1, "\r\n");
-		}
-
-		//cierra el archivo
-		if(f_close(&archivo) != FR_OK);
-
-		//si es necesario desmonta la memoria
-//		if(f_mount(NULL, "", 1) != FR_OK);
-
+	//LEE LINEA POR LINEA
+	uartx_write_text(&huart1, "leido=");
+	while(f_gets(SD_BUFFER, sizeof(SD_BUFFER), &archivo)){
+		sprintf(texto,"%s", SD_BUFFER);
+		uartx_write_text(&huart1, texto);
+		uartx_write_text(&huart1, "\r\n");
 	}
+
+	//cierra el archivo
+	if(f_close(&archivo) != FR_OK);
+
+	//si es necesario desmonta la memoria
+	//		if(f_mount(NULL, "", 1) != FR_OK);
+
+}
 /* USER CODE END 0 */
 
 /**
@@ -184,22 +186,21 @@ int main(void)
    SD_PRUEBA();
 
    //Abre un archivo existente para agregar datos
-   		if(f_open(&archivo, "suscribete.txt",FA_OPEN_APPEND | FA_READ | FA_WRITE) != FR_OK)
-          HAL_Delay(1);
-   			//escribe algo en la memoria
-   	          f_puts("SUSCRIBETE\r\n", &archivo);
+   if(f_open(&archivo, "suscribete.txt",FA_OPEN_APPEND | FA_READ | FA_WRITE) != FR_OK)
+	   HAL_Delay(1);
 
-   			    f_puts("AL MEJOR\r\n", &archivo);
+   //escribe algo en la memoria
+   f_puts("SUSCRIBETE\r\n", &archivo);
+   f_puts("AL MEJOR\r\n", &archivo);
+   f_puts("CANAL\r\n", &archivo);
+   f_puts("DE EMBEBIDOS\r\n", &archivo);
 
-   				f_puts("CANAL\r\n", &archivo);
-   				f_puts("DE EMBEBIDOS\r\n", &archivo);
+   //cierra archivo abierto
+   f_close(&archivo);
 
-   				//cierra archivo abierto
-   				f_close(&archivo);
-
-             //  crea el nuevo archivo para almacenar  los dat[s
-   			f_open(&archivo, "Data.txt", FA_CREATE_ALWAYS | FA_READ | FA_WRITE);
-   			f_close(&archivo);
+   //  crea el nuevo archivo para almacenar  los dat[s
+   f_open(&archivo, "Data.txt", FA_CREATE_ALWAYS | FA_READ | FA_WRITE);
+   f_close(&archivo);
 
   /* USER CODE END 2 */
 
@@ -209,30 +210,26 @@ int main(void)
   {
 	  PIN_BLINK(LED);
 	  codigo=ADC_Read();
-	  	  temperatura=codigo*3.3*100.0/4095.0;
-	  	  sprintf(texto,"%u\t%.1f\r\n",cont,temperatura);
-	        cont++;
-	  	  if(PIN_READ(sw)==1)
-	  	  {
-	  	  //Abre un archivo sino lo crea
-	  	 	  f_open(&archivo, "Data.txt",FA_OPEN_APPEND | FA_READ | FA_WRITE) ;
-	       	    HAL_Delay(1);
-	  	  			//escribe algo en la memoria
+	  temperatura=codigo*3.3*100.0/4095.0;
+	  sprintf(texto,"%u\t%.1f\r\n",cont,temperatura);
+	  cont++;
+	  if(PIN_READ(sw)==1){
+		  //Abre un archivo sino lo crea
+		  f_open(&archivo, "Data.txt",FA_OPEN_APPEND | FA_READ | FA_WRITE) ;
+		  HAL_Delay(1);
+		  //escribe algo en la memoria
 
-	  	  			  f_puts(texto, &archivo);
+		  f_puts(texto, &archivo);
 
-	  	  				//cierra archivo abierto
-	  	  				f_close(&archivo);
-
-	  	  }
-	  	  else
-	  	  {
-	  	     //desmonta la memoria
-	  		  f_mount(NULL, "", 1);
-	            uartx_write_text(&huart1, "puede sacar la memoria");
-	            PIN_OFF(LED);
-	            HAL_Delay(3000);
-	  	  }
+		  //cierra archivo abierto
+		  f_close(&archivo);
+	  }else {
+		  //desmonta la memoria
+		  f_mount(NULL, "", 1);
+		  uartx_write_text(&huart1, "puede sacar la memoria");
+		  PIN_OFF(LED);
+		  HAL_Delay(3000);
+	  }
 
 	  HAL_Delay(200);
 
