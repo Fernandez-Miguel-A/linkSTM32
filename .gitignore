@@ -1,2 +1,14 @@
 *.workspace
 *.FernandezMiguelA
+#
+# Archivos tempo de STM32IDE
+#
+*.list
+*.map
+*.mk
+*.o
+*.su
+*.cyclo
+*.asm
+# *.s estos archivos no
+*.ld
