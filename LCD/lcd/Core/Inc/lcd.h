@@ -1,5 +1,7 @@
 //#include <xc.h>
 //#define _XTAL_FREQ 48000000
+#include <stdint.h>
+//#include "stm32f1xx_hal_rcc.h"
 
 #define USE_CGRAM_LCD
 
@@ -28,6 +30,15 @@ void Lcd_Shift_Right(void);
 void Lcd_Shift_Left(void);
 void Lcd_Blink(void);
 void Lcd_NoBlink(void);
+
+/*
+__STATIC_INLINE void HAL_Delay_Us(volatile uint32_t microseconds)
+{
+	uint32_t clk_cycle_start = DWT->CYCCNT;
+	microseconds *= (HAL_RCC_GetHCLKFreq() / 1000000);
+	while ((DWT->CYCCNT - clk_cycle_start) < microseconds);
+}*/
+
 
 #ifdef USE_CGRAM_LCD
 void Lcd_CGRAM_CreateChar(char add, const char* chardata);

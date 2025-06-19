@@ -156,7 +156,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		Lcd_Set_Cursor(1,1);
+		    Lcd_Set_Cursor(1,1);
         Lcd_Write_String("Test LCD 16x2");
         Lcd_Set_Cursor(2,1);
         Lcd_Write_String("PIC18F4550");

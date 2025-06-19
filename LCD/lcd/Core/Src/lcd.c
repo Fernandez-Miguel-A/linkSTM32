@@ -7,6 +7,23 @@
 extern void __delay_us(int32_t delay);
 
 
+uint32_t HAL_Delay_Us_Init(void)
+{
+	CoreDebug->DEMCR &= ~CoreDebug_DEMCR_TRCENA_Msk;
+	CoreDebug->DEMCR |=  CoreDebug_DEMCR_TRCENA_Msk;
+	DWT->CTRL &= ~DWT_CTRL_CYCCNTENA_Msk;
+	DWT->CTRL |=  DWT_CTRL_CYCCNTENA_Msk;
+	DWT->CYCCNT = 0;
+
+	__ASM volatile ("NOP");
+	__ASM volatile ("NOP");
+	__ASM volatile ("NOP");
+
+    return (DWT -> CYCCNT) ? 0 : 1;
+}
+
+
+
 void Lcd_Port(char a)
 {
     (a & 1) ? (D4(1)) : (D4(0));
@@ -75,6 +92,10 @@ void Lcd_Init(void)
 	D5_DIR = 0;
 	D6_DIR = 0;
 	D7_DIR = 0;*/
+
+	/*HAL_Delay_Us_Init();
+	__delay_ms(50);*/
+
     Lcd_Port(0x00);
     __delay_ms(20);
     Lcd_Cmd(0x03);
