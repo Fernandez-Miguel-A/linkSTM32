@@ -1,0 +1,23 @@
+--cpu=Cortex-M4.fp.sp
+"led_nucleo\startup_stm32f446xx.o"
+"led_nucleo\main.o"
+"led_nucleo\stm32f4xx_it.o"
+"led_nucleo\stm32f4xx_hal_msp.o"
+"led_nucleo\stm32f4xx_hal_rcc.o"
+"led_nucleo\stm32f4xx_hal_rcc_ex.o"
+"led_nucleo\stm32f4xx_hal_flash.o"
+"led_nucleo\stm32f4xx_hal_flash_ex.o"
+"led_nucleo\stm32f4xx_hal_flash_ramfunc.o"
+"led_nucleo\stm32f4xx_hal_gpio.o"
+"led_nucleo\stm32f4xx_hal_dma_ex.o"
+"led_nucleo\stm32f4xx_hal_dma.o"
+"led_nucleo\stm32f4xx_hal_pwr.o"
+"led_nucleo\stm32f4xx_hal_pwr_ex.o"
+"led_nucleo\stm32f4xx_hal_cortex.o"
+"led_nucleo\stm32f4xx_hal.o"
+"led_nucleo\stm32f4xx_hal_exti.o"
+"led_nucleo\system_stm32f4xx.o"
+--strict --scatter "LED_Nucleo\LED_Nucleo.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "LED_Nucleo.map" -o LED_Nucleo\LED_Nucleo.axf
