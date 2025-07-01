@@ -1,0 +1,26 @@
+--cpu=Cortex-M4.fp.sp
+"lcd_nucleo\startup_stm32f446xx.o"
+"lcd_nucleo\lcd.o"
+"lcd_nucleo\main.o"
+"lcd_nucleo\stm32f4xx_it.o"
+"lcd_nucleo\stm32f4xx_hal_msp.o"
+"lcd_nucleo\stm32f4xx_hal_tim.o"
+"lcd_nucleo\stm32f4xx_hal_tim_ex.o"
+"lcd_nucleo\stm32f4xx_hal_rcc.o"
+"lcd_nucleo\stm32f4xx_hal_rcc_ex.o"
+"lcd_nucleo\stm32f4xx_hal_flash.o"
+"lcd_nucleo\stm32f4xx_hal_flash_ex.o"
+"lcd_nucleo\stm32f4xx_hal_flash_ramfunc.o"
+"lcd_nucleo\stm32f4xx_hal_gpio.o"
+"lcd_nucleo\stm32f4xx_hal_dma_ex.o"
+"lcd_nucleo\stm32f4xx_hal_dma.o"
+"lcd_nucleo\stm32f4xx_hal_pwr.o"
+"lcd_nucleo\stm32f4xx_hal_pwr_ex.o"
+"lcd_nucleo\stm32f4xx_hal_cortex.o"
+"lcd_nucleo\stm32f4xx_hal.o"
+"lcd_nucleo\stm32f4xx_hal_exti.o"
+"lcd_nucleo\system_stm32f4xx.o"
+--strict --scatter "LCD_Nucleo\LCD_Nucleo.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "LCD_Nucleo.map" -o LCD_Nucleo\LCD_Nucleo.axf
