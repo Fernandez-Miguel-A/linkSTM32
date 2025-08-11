@@ -96,8 +96,8 @@ void __delay_us0(int32_t delay)
 #define     PORTA			GPIOA->ODR
 #define 	PORTA2(x)		HAL_GPIO_WritePin(GPIOA, x, GPIO_PIN_SET);
 
-#define    _7SEGMENTOS(x)               (GPIOA->ODR = x | (GPIOA->ODR&0xFF80))
-
+#define    _7SEGMENTOS(x)               (GPIOA->ODR = (0xFF80&GPIOA->ODR) | (0x007F&x))
+//_ #define    _7SEGMENTOS(x)               (GPIOA->ODR |= (x&0x007F))
 
 
 

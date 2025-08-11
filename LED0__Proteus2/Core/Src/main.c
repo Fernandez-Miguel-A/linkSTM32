@@ -60,6 +60,8 @@ static void MX_GPIO_Init(void);
 #define     PORTA			GPIOA->ODR
 #define 	PORTA2(x)		HAL_GPIO_WritePin(GPIOA, x, GPIO_PIN_SET);
 
+#define    _7SEGMENTOS(x)               (GPIOA->ODR = (0xFF80&GPIOA->ODR) | (0x007F&x))
+//_ #define    _7SEGMENTOS(x)               (GPIOA->ODR |= (x&0x007F))
 
 
 uint8_t segment[10]={
