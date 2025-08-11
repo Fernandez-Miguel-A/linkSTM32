@@ -322,13 +322,13 @@ int ff_del_syncobj (_SYNC_t sobj);				/* Delete a sync object */
 
 
 /* File access mode and open method flags (3rd argument of f_open) */
-#define	FA_READ				0x01//solo lectura
-#define	FA_WRITE			0x02// escritura
-#define	FA_OPEN_EXISTING	0x00//abre uno existente sino error
-#define	FA_CREATE_NEW		0x04//crea un archivo si existe error
-#define	FA_CREATE_ALWAYS	0x08 //crea un archivo si existe lo sobreescribe
-#define	FA_OPEN_ALWAYS		0x10 //abre un archivo sino existe lo crea
-#define	FA_OPEN_APPEND		0x30 //abre  para añadir sino existe lo crea
+#define	FA_READ				0x01
+#define	FA_WRITE			0x02
+#define	FA_OPEN_EXISTING	0x00
+#define	FA_CREATE_NEW		0x04
+#define	FA_CREATE_ALWAYS	0x08
+#define	FA_OPEN_ALWAYS		0x10
+#define	FA_OPEN_APPEND		0x30
 
 /* Fast seek controls (2nd argument of f_lseek) */
 #define CREATE_LINKMAP	((FSIZE_t)0 - 1)
