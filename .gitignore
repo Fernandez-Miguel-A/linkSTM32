@@ -7,8 +7,12 @@
 *.map
 *.mk
 *.o
+*.d
 *.su
 *.cyclo
 *.asm
 # *.s estos archivos no
 *.ld
+
+*.lnp
+*.su
