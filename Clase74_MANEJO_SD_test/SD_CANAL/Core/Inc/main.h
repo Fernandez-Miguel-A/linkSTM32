@@ -47,6 +47,16 @@ extern "C" {
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
 
+//./Middlewares/Third_Party/FatFs/src/ff.h
+/* File access mode and open method flags (3rd argument of f_open) */
+#define	FA_READ				0x01//solo lectura
+#define	FA_WRITE			0x02// escritura
+#define	FA_OPEN_EXISTING	0x00//abre uno existente sino error
+#define	FA_CREATE_NEW		0x04//crea un archivo si existe error
+#define	FA_CREATE_ALWAYS	0x08//crea un archivo si existe lo sobreescribe
+#define	FA_OPEN_ALWAYS		0x10//abre un archivo sino existe lo crea
+#define	FA_OPEN_APPEND		0x30//abre  para agregar sino existe lo crea
+
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
