@@ -88,14 +88,6 @@ static void MX_USART1_UART_Init(void);
 void SD_PRUEBA(void)
 {
 	//retardo inicializacion
-	HAL_Delay(500);
-
-	//detecta la memoria
-	if(f_mount(&memsd, "", 1) == FR_OK)
-		uartx_write_text(&huart1, "memoria encontrada\r\n");
-	else
-		uartx_write_text(&huart1, "memoria no encontrada\r\n");
-
 
 	//formatea la memoria montada en FAT32
 	//if(f_mkfs("", FM_FAT, 0, SD_BUFFER, _MAX_SS) != FR_OK)
@@ -185,12 +177,22 @@ int main(void)
   MX_USART1_UART_Init();
   MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
+
+	HAL_Delay(500);
+
+	//detecta la memoria
+	if(f_mount(&memsd, "", 1) == FR_OK)
+		uartx_write_text(&huart1, "memoria encontrada\r\n");
+	else
+		uartx_write_text(&huart1, "memoria no encontrada\r\n");
+
    SD_PRUEBA();
 
    //Abre un archivo existente para agregar datos
    if(f_open(&archivo, "suscribete.txt",FA_OPEN_APPEND | FA_READ | FA_WRITE) != FR_OK)
 	   HAL_Delay(1);
 
+	uartx_write_text(&huart1, "\r\nEngancha a SUSCRIBIRSE\r\n");
    //escribe algo en la memoria
    f_puts("SUSCRIBETE\r\n", &archivo);
    f_puts("AL MEJOR\r\n", &archivo);
@@ -470,8 +472,7 @@ void Error_Handler(void)
   }
   /* USER CODE END Error_Handler_Debug */
 }
-
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
   *         where the assert_param error has occurred.
