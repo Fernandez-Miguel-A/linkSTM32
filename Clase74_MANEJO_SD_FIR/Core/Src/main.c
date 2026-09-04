@@ -71,6 +71,101 @@ char texto[100];
 uint16_t  codigo,cont=0;
 float temperatura;
 
+
+// Primer ##
+
+#include "arm_math.h"
+#define NUM_TAPS 29 // Número de coeficientes del filtro (debe ser impar generalmente)
+#define BLOCK_SIZE 512 // Tamaño de bloque a procesar por iteración
+
+// Instancia y estado del filtro FIR
+arm_fir_instance_q15 S;
+q15_t firState[NUM_TAPS + BLOCK_SIZE - 1];
+// Coeficientes exportados desde MATLAB / Python (formato Q15 / int16_t)
+const q15_t firCoeffs[NUM_TAPS] = {
+ -12, -45, 120, 350, 0, -890, ... // Taps escalados a 16-bit
+};
+void FIR_Init(void) {
+    // Inicializa el filtro FIR en formato Q15 (Punto fijo de 16 bits)
+    arm_fir_init_q15(&S, NUM_TAPS, (q15_t *)&firCoeffs[0],
+    &firState[0], BLOCK_SIZE);
+}
+
+
+// Segundo ##
+
+#define AUDIO_BUF_SIZE (BLOCK_SIZE * 2) // Búfer Ping-Pong (2x tamaño de bloque)
+
+q15_t txAudioBuffer[AUDIO_BUF_SIZE]; // Búfer de salida hacia el DMA
+q15_t rxFileBuffer[BLOCK_SIZE]; // Búfer temporal de lectura del archivo
+q15_t filteredBuffer[BLOCK_SIZE]; // Búfer donde guardamos el audio filtrado
+
+volatile uint8_t bufferHalfToUpdate = 0; // 1 = Primera mitad, 2 = Segunda mitad
+volatile uint8_t readyToProcess = 0;
+
+
+void Start_Audio_Out(void) {
+    // Inicia transmisión I2S mediante DMA en modo circular
+    HAL_I2S_Transmit_DMA(&hi2s1, (uint16_t*)txAudioBuffer, AUDIO_BUF_SIZE);
+}
+// Interrupción cuando DMA envía la PRIMERA mitad (Ping)
+void HAL_I2S_TxHalfCpltCallback(I2S_HandleTypeDef *hi2s) {
+    bufferHalfToUpdate = 1;
+    readyToProcess = 1;
+}
+// Interrupción cuando DMA envía la SEGUNDA mitad (Pong)
+void HAL_I2S_TxCpltCallback(I2S_HandleTypeDef *hi2s) {
+    bufferHalfToUpdate = 2;
+    readyToProcess = 1;
+}
+
+
+// Tercer ##
+
+#include "ff.h" // Biblioteca FatFs para lectura de SD
+
+FIL audioFile;
+UINT bytesRead;
+
+void Audio_Process_Loop(void) {
+    FIR_Init();
+    f_open(&audioFile, "audio.raw", FA_READ);
+    // Saltar encabezado WAV si es necesario (ej. 44 bytes)
+    f_lseek(&audioFile, 44);
+    Start_Audio_Out();
+
+    while (1) {
+        if (readyToProcess) {
+            readyToProcess = 0;
+            // 1. Leer el siguiente bloque del archivo WAV/RAW
+            f_read(&audioFile, rxFileBuffer, sizeof(rxFileBuffer),
+                    &bytesRead);
+            if (bytesRead < sizeof(rxFileBuffer)) {
+                // Fin de archivo o reinicio
+                f_lseek(&audioFile, 44);
+                continue;
+            }
+            // 2. Ejecutar el filtrado FIR optimizado con CMSIS-DSP
+            arm_fir_q15(&S, rxFileBuffer, filteredBuffer, BLOCK_SIZE);
+
+            // 3. Copiar el bloque filtrado al área del búfer DMA correspondiente
+            if (bufferHalfToUpdate == 1) {
+                // DMA está leyendo la 2da mitad -> Escribir en la 1ra mitad (Ping)
+                memcpy(&txAudioBuffer[0], filteredBuffer, BLOCK_SIZE *
+                    sizeof(q15_t));
+            }
+            else if (bufferHalfToUpdate == 2) {
+                // DMA está leyendo la 1ra mitad -> Escribir en la 2da mitad (Pong)
+                memcpy(&txAudioBuffer[BLOCK_SIZE], filteredBuffer,
+                    BLOCK_SIZE * sizeof(q15_t));
+            }
+        }
+    }
+}
+
+
+// Cuarto pre-main() ##
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
