@@ -39,40 +39,40 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := SD_CANAL
+BUILD_ARTIFACT_NAME := FIR_sd
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-SD_CANAL.elf \
+FIR_sd.elf \
 
 MAP_FILES += \
-SD_CANAL.map \
+FIR_sd.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-SD_CANAL.list \
+FIR_sd.list \
 
 OBJCOPY_HEX += \
-SD_CANAL.hex \
+FIR_sd.hex \
 
 OBJCOPY_BIN += \
-SD_CANAL.bin \
+FIR_sd.bin \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: SD_CANAL.elf secondary-outputs
+main-build: FIR_sd.elf secondary-outputs
 
 # Tool invocations
-SD_CANAL.elf SD_CANAL.map: $(OBJS) $(USER_OBJS) C:\Users\MIGUEL\ A.\ FERNANDEZ\Desktop\Lib_mikroC_y_Otros\linkSTM32\Clase74_MANEJO_SD_test\SD_CANAL\STM32F401CCUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "SD_CANAL.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\MIGUEL A. FERNANDEZ\Desktop\Lib_mikroC_y_Otros\linkSTM32\Clase74_MANEJO_SD_test\SD_CANAL\STM32F401CCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SD_CANAL.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
+FIR_sd.elf FIR_sd.map: $(OBJS) $(USER_OBJS) C:\Users\MIGUEL\ A.\ FERNANDEZ\Desktop\Lib_mikroC_y_Otros\linkSTM32\Clase74_MANEJO_SD_FIR\STM32F401CCUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "FIR_sd.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\MIGUEL A. FERNANDEZ\Desktop\Lib_mikroC_y_Otros\linkSTM32\Clase74_MANEJO_SD_FIR\STM32F401CCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="FIR_sd.map" -Wl,--gc-sections -static -L../Middlewares/ST/ARM/DSP/Lib --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -81,24 +81,24 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-SD_CANAL.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "SD_CANAL.list"
+FIR_sd.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "FIR_sd.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-SD_CANAL.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "SD_CANAL.hex"
+FIR_sd.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "FIR_sd.hex"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-SD_CANAL.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "SD_CANAL.bin"
+FIR_sd.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "FIR_sd.bin"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) SD_CANAL.bin SD_CANAL.elf SD_CANAL.hex SD_CANAL.list SD_CANAL.map default.size.stdout
+	-$(RM) FIR_sd.bin FIR_sd.elf FIR_sd.hex FIR_sd.list FIR_sd.map default.size.stdout
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX) $(OBJCOPY_BIN)
