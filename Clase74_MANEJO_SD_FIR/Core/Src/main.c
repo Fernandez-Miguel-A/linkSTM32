@@ -102,6 +102,7 @@ void FIR_Init(void) {
 q15_t txAudioBuffer[AUDIO_BUF_SIZE]; // Búfer de salida hacia el DMA
 q15_t rxFileBuffer[BLOCK_SIZE]; // Búfer temporal de lectura del archivo
 q15_t filteredBuffer[BLOCK_SIZE]; // Búfer donde guardamos el audio filtrado
+uint32_t txAudioBuffer_float[AUDIO_BUF_SIZE]; // Búfer de salida hacia el DMA
 
 volatile uint8_t bufferHalfToUpdate = 0; // 1 = Primera mitad, 2 = Segunda mitad
 volatile uint8_t readyToProcess = 0;
@@ -109,8 +110,15 @@ volatile uint8_t readyToProcess = 0;
 
 void Start_Audio_Out(void) {
     // Inicia transmisión I2S mediante DMA en modo circular
-    HAL_I2S_Transmit_DMA(&hi2s2, (uint16_t*)txAudioBuffer, AUDIO_BUF_SIZE);
+    //HAL_I2S_Transmit_DMA(&hi2s2, (uint16_t*)txAudioBuffer, AUDIO_BUF_SIZE);
+	HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)txAudioBuffer_float, AUDIO_BUF_SIZE, DAC_ALIGN_12B_R);
 }
+
+void Convertir_y_Reproducir()
+{
+
+}
+
 // Interrupción cuando DMA envía la PRIMERA mitad (Ping)
 void HAL_I2S_TxHalfCpltCallback(I2S_HandleTypeDef *hi2s) {
     bufferHalfToUpdate = 1;
@@ -143,25 +151,31 @@ void Audio_Process_Loop(void) {
             // 1. Leer el siguiente bloque del archivo WAV/RAW
             f_read(&audioFile, rxFileBuffer, sizeof(rxFileBuffer),
                     &bytesRead);
-            if (bytesRead < sizeof(rxFileBuffer)) {
-                // Fin de archivo o reinicio
-                f_lseek(&audioFile, 44);
-                continue;
-            }
+            //if (bytesRead < sizeof(rxFileBuffer)) {
+            //    // Fin de archivo o reinicio
+            //    f_lseek(&audioFile, 44);
+            //    break;
+            //}
             // 2. Ejecutar el filtrado FIR optimizado con CMSIS-DSP
-            arm_fir_q15(&S, rxFileBuffer, filteredBuffer, BLOCK_SIZE);
+            arm_fir_q15(&S, rxFileBuffer, filteredBuffer, bytesRead/sizeof(q15));
 
             // 3. Copiar el bloque filtrado al área del búfer DMA correspondiente
             if (bufferHalfToUpdate == 1) {
                 // DMA está leyendo la 2da mitad -> Escribir en la 1ra mitad (Ping)
-                memcpy(&txAudioBuffer[0], filteredBuffer, BLOCK_SIZE *
-                    sizeof(q15_t));
+                memcpy(&txAudioBuffer[0], filteredBuffer, bytesRead);
+                Convertir_y_Reproducir();
             }
             else if (bufferHalfToUpdate == 2) {
                 // DMA está leyendo la 1ra mitad -> Escribir en la 2da mitad (Pong)
                 memcpy(&txAudioBuffer[BLOCK_SIZE], filteredBuffer,
-                    BLOCK_SIZE * sizeof(q15_t));
+                		bytesRead);
             }
+            //test1
+            if (bytesRead < sizeof(rxFileBuffer)) {
+            	// Fin de archivo
+            	break;
+            }
+            //
         }
     }
 }
@@ -318,6 +332,9 @@ int main(void)
 	  codigo=ADC_Read();
 	  temperatura=codigo*3.3*100.0/4095.0;
 	  sprintf(texto,"%u\t%.1f\r\n",cont,temperatura);
+
+	  Audio_Process_Loop();		//play music
+
 	  cont++;
 	  if(PIN_READ(sw)==1){
 		  //Abre un archivo sino lo crea
@@ -471,7 +488,7 @@ static void MX_I2S2_Init(void)
   hi2s2.Init.AudioFreq = I2S_AUDIOFREQ_8K;
   hi2s2.Init.CPOL = I2S_CPOL_LOW;
   hi2s2.Init.ClockSource = I2S_CLOCK_PLL;
-  hi2s2.Init.FullDuplexMode = I2S_FULLDUPLEXMODE_ENABLE;
+  hi2s2.Init.FullDuplexMode = I2S_FULLDUPLEXMODE_DISABLE;
   if (HAL_I2S_Init(&hi2s2) != HAL_OK)
   {
     Error_Handler();
