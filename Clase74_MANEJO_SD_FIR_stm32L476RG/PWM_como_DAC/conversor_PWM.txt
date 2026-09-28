@@ -1,0 +1,18 @@
+#define BUFFER_SIZE 100
+#define TIMER_ARR 1000
+
+int16_t samples_q15[BUFFER_SIZE];      // Tus muestras originales en Q15
+uint32_t pwm_buffer[BUFFER_SIZE];     // El buffer que leerá el DMA
+
+void Convert_Q15_To_PWM(void) {
+    for (int i = 0; i < BUFFER_SIZE; i++) {
+        // 1. Convertir Q15 (-32768 a 32767) a rango flotante de -0.5 a +0.5
+        float val_f = (float)samples_q15[i] / 65536.0f;
+        
+        // 2. Desplazar a rango positivo (0.0 a 1.0)
+        val_f += 0.5f;
+        
+        // 3. Escalar al valor máximo del registro de comparación del Timer
+        pwm_buffer[i] = (uint32_t)(val_f * TIMER_ARR);
+    }
+}
