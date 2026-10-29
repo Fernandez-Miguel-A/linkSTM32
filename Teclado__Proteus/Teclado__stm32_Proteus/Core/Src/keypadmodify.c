@@ -30,7 +30,7 @@ char Keypad_Get_Char_stm32(void)
     	HAL_GPIO_WritePin(let_PORTS[r], let_PINS[r], GPIO_PIN_SET);
     }
 
-    val_key = 0;
+    val_key = 0; // debe retornar 0 en caso de que no pulse una tecla.
 
     for (int r = 0; r < 4; r++) {
         HAL_GPIO_WritePin(let_PORTS[r], let_PINS[r], GPIO_PIN_RESET);
