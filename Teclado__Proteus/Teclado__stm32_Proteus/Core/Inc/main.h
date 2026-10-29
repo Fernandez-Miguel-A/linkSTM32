@@ -57,22 +57,22 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define C1_Pin GPIO_PIN_0
-#define C1_GPIO_Port GPIOA
-#define C2_Pin GPIO_PIN_1
-#define C2_GPIO_Port GPIOA
-#define C3_Pin GPIO_PIN_2
-#define C3_GPIO_Port GPIOA
-#define C4_Pin GPIO_PIN_3
-#define C4_GPIO_Port GPIOA
-#define R1_Pin GPIO_PIN_4
-#define R1_GPIO_Port GPIOA
-#define R2_Pin GPIO_PIN_5
-#define R2_GPIO_Port GPIOA
-#define R3_Pin GPIO_PIN_6
-#define R3_GPIO_Port GPIOA
-#define R4_Pin GPIO_PIN_7
-#define R4_GPIO_Port GPIOA
+#define F1_Pin GPIO_PIN_0
+#define F1_GPIO_Port GPIOA
+#define F2_Pin GPIO_PIN_1
+#define F2_GPIO_Port GPIOA
+#define F3_Pin GPIO_PIN_2
+#define F3_GPIO_Port GPIOA
+#define F4_Pin GPIO_PIN_3
+#define F4_GPIO_Port GPIOA
+#define A_Pin GPIO_PIN_4
+#define A_GPIO_Port GPIOA
+#define B_Pin GPIO_PIN_5
+#define B_GPIO_Port GPIOA
+#define C_Pin GPIO_PIN_6
+#define C_GPIO_Port GPIOA
+#define D_Pin GPIO_PIN_7
+#define D_GPIO_Port GPIOA
 #define LED1_Pin GPIO_PIN_0
 #define LED1_GPIO_Port GPIOB
 #define LED2_Pin GPIO_PIN_1

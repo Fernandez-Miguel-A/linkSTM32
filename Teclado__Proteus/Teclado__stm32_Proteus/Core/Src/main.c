@@ -224,7 +224,6 @@ int main(void)
     /* USER CODE BEGIN 3 */
 		
 		do {  
-				kp = Keypad_Get_Char();
 				if(!isdigit(c)){// && (atoi(c)>9)){
 						 c = '0'; 
 				}
@@ -245,6 +244,7 @@ int main(void)
         Retardo_ms(retardo);     //retardo
         LED1(0);         
         Retardo_ms(retardo);     //retardo
+			kp = Keypad_Get_Char_stm32();
 		} while(!kp);
          
     LED2(1);
@@ -410,20 +410,20 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, R1_Pin|R2_Pin|R3_Pin|R4_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, A_Pin|B_Pin|C_Pin|D_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, LED1_Pin|LED2_Pin|D4_Pin|D5_Pin
                           |D6_Pin|D7_Pin|RS_Pin|EN_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : C1_Pin C2_Pin C3_Pin C4_Pin */
-  GPIO_InitStruct.Pin = C1_Pin|C2_Pin|C3_Pin|C4_Pin;
+  /*Configure GPIO pins : F1_Pin F2_Pin F3_Pin F4_Pin */
+  GPIO_InitStruct.Pin = F1_Pin|F2_Pin|F3_Pin|F4_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : R1_Pin R2_Pin R3_Pin R4_Pin */
-  GPIO_InitStruct.Pin = R1_Pin|R2_Pin|R3_Pin|R4_Pin;
+  /*Configure GPIO pins : A_Pin B_Pin C_Pin D_Pin */
+  GPIO_InitStruct.Pin = A_Pin|B_Pin|C_Pin|D_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
