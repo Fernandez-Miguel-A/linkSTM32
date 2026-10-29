@@ -224,27 +224,28 @@ int main(void)
     /* USER CODE BEGIN 3 */
 		
 		do {  
-				if(!isdigit(c)){// && (atoi(c)>9)){
-						 c = '0'; 
-				}
-				Lcd_Set_Cursor(1, 15);
-				Lcd_Write_Char(kp);
-				Lcd_Set_Cursor(1, 16);
-				Lcd_Write_Char(c++);
-
-
-				/*if (but == 0){// ENTRA aca  SIN Pulsar  el boton.
-					 Lcd_Set_Cursor(2,1);
-					 Lcd_Write_String("                ");
-					 sprintf(Txt, "%i", retardo);
-					 Lcd_Set_Cursor(2, 1);
-					 Lcd_Write_String(Txt);
-				} */
-        LED1(1);
-        Retardo_ms(retardo);     //retardo
-        LED1(0);         
-        Retardo_ms(retardo);     //retardo
 			kp = Keypad_Get_Char_stm32();
+			if(!isdigit(c)){// && (atoi(c)>9)){
+					 c = '0';
+			}
+			Lcd_Set_Cursor(1, 15);
+			Lcd_Write_Char(kp);
+			Lcd_Set_Cursor(1, 16);
+			Lcd_Write_Char(c++);
+
+
+			/*if (but == 0){// ENTRA aca  SIN Pulsar  el boton.
+				 Lcd_Set_Cursor(2,1);
+				 Lcd_Write_String("                ");
+				 sprintf(Txt, "%i", retardo);
+				 Lcd_Set_Cursor(2, 1);
+				 Lcd_Write_String(Txt);
+			} */
+
+			LED1(1);
+			Retardo_ms(retardo);     //retardo
+			LED1(0);
+			Retardo_ms(retardo);     //retardo
 		} while(!kp);
          
     LED2(1);
@@ -467,8 +468,7 @@ void Error_Handler(void)
   }
   /* USER CODE END Error_Handler_Debug */
 }
-
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
   *         where the assert_param error has occurred.
