@@ -37,7 +37,7 @@ char Keypad_Get_Char_stm32(void)
         for (int c = 0; c < 4; c++) {
             if (!(HAL_GPIO_ReadPin(F_PORTS[c], F_PINS[c]))) {
                 //HAL_Delay(4);
-                //while (!(HAL_GPIO_ReadPin(F_PORTS[c], F_PINS[c]))); //cuelge inesperado.
+                while (!(HAL_GPIO_ReadPin(F_PORTS[c], F_PINS[c]))); //cuelge inesperado.
                 //HAL_Delay(4);
                 val_key = keys[r][c];
             }
