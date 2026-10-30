@@ -9,7 +9,6 @@
 #include "Teclado.h"
 #include "stdbool.h"
 
-#define    res    0
 
 bool res_=res;
 
@@ -89,6 +88,7 @@ uint8_t tecla_presionada()
   HAL_Delay(5);
   te=t_tecla4();
   if (te!=0) return (te);
+  return 0;
 }
 
 
