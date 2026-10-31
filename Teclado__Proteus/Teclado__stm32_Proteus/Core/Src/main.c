@@ -225,7 +225,7 @@ int main(void)
     /* USER CODE BEGIN 3 */
 		
 		do {  
-			kp = (char)Keypad_Get_Char_stm32();
+			kp = (char)tecla_deco();
 			if(!isdigit(c)){// && (atoi(c)>9)){
 					 c = '0';
 			}
