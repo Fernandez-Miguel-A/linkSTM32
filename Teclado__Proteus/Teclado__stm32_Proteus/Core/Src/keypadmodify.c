@@ -1,4 +1,5 @@
 #include "main.h"
+#include "keypadmodify.h"
 //#include "key_jorge.h"
 /*
 C1->GPIOA[0](GPIO_PULLUP)
@@ -27,23 +28,23 @@ char Keypad_Get_Char_stm32(void)
 
 
     for (int r = 0; r < 4; r++) {
-    	HAL_GPIO_WritePin(let_PORTS[r], let_PINS[r], GPIO_PIN_RESET);
+    	HAL_GPIO_WritePin(let_PORTS[r], let_PINS[r], state);
     }
 
     val_key = 0; // debe retornar 0 en caso de que no pulse una tecla.
 
     for (int r = 0; r < 4; r++) {
-        HAL_GPIO_WritePin(let_PORTS[r], let_PINS[r], GPIO_PIN_SET);
+        HAL_GPIO_WritePin(let_PORTS[r], let_PINS[r], !state);
         for (int c = 0; c < 4; c++) {
-            if (HAL_GPIO_ReadPin(F_PORTS[c], F_PINS[c])) {
+            if (HAL_GPIO_ReadPin(F_PORTS[c], F_PINS[c]) == !state) {
                 HAL_Delay(4);
-                while (HAL_GPIO_ReadPin(F_PORTS[c], F_PINS[c])); //cuelge inesperado.
+                while (HAL_GPIO_ReadPin(F_PORTS[c], F_PINS[c]) == !state); //cuelge inesperado.
                 HAL_Delay(4);
                 val_key = keys[r][c];
                 return val_key;
             }
         }
-        HAL_GPIO_WritePin(let_PORTS[r], let_PINS[r], GPIO_PIN_RESET);
+        HAL_GPIO_WritePin(let_PORTS[r], let_PINS[r], state);
     }
 
     return val_key;
