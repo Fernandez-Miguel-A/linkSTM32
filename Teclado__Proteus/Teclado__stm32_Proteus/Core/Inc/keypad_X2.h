@@ -1,5 +1,5 @@
-#ifndef INC_KEYPAD_4X4_H_
-#define INC_KEYPAD_4X4_H_
+#ifndef keypad_X2_H_
+#define keypad_X2_H_
 
 #define    state    0 // 0: pull-down, 1: pull-up
 

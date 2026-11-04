@@ -23,11 +23,11 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include "lcd.h"
-#include "keypadmodify.h"
 #include "Teclado.h"
 
 #include "stdint.h"
 #include <ctype.h>
+#include <keypad_X2.h>
 #include "string.h"
 
 
@@ -200,11 +200,10 @@ int main(void)
     if (HAL_TIM_Base_Start_IT(&htim2) != HAL_OK)
     {
       Error_Handler();
-    }
-		
+    }		
 		
     //Keypad_Init();										// PUERTOA
-    
+
     Lcd_Init();       // Initialize Lcd
     Delay_ms(15);     // aguarda a que el Lcd se estabilice
 
@@ -230,7 +229,7 @@ int main(void)
     /* USER CODE BEGIN 3 */
 		
 		do {  
-			kp = (char)tecla_deco();
+			kp = (char)Keypad_Get_Char_stm32();
 			if(!isdigit(c)){// && (atoi(c)>9)){
 					 c = '0';
 			}
@@ -257,7 +256,6 @@ int main(void)
 		if(tecla == '='){
 				if(retardo_s[0] != 0)
 						retardo = StrToInt(retardo_s);
-						
 		}
 		if(!isdigit(tecla)){
 				estado_teclado = Efin;
