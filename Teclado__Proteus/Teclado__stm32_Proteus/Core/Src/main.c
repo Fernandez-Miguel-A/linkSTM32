@@ -478,7 +478,7 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
-static void FuncionCada500ms(void)
+static void FuncionCada_retardo_ms(void)
 {
   HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
 }
@@ -486,13 +486,13 @@ static void FuncionCada500ms(void)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   if (htim->Instance == TIM2){
-      if (++tim2_ms_ticks >= 500){
+      if (++tim2_ms_ticks >= 50){
           tim2_ms_ticks = 0;
-          FuncionCada500ms();
-      } 
-      if (++tim2_ms_ticks2 >= 50){
-          tim2_ms_ticks2 = 0;
           HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
+      }
+      if (++tim2_ms_ticks2 >= retardo){
+          tim2_ms_ticks2 = 0;
+          FuncionCada_retardo_ms();
       }
   }
 }
