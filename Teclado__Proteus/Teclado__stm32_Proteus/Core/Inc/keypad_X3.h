@@ -5,8 +5,8 @@
  *      Author: alcid
  */
 
-#ifndef LIBRERIAS_TECLADO_H_
-#define LIBRERIAS_TECLADO_H_
+#ifndef keypad_X3_H_
+#define keypad_X3_H_
 
 #include "main.h"
 
@@ -55,4 +55,4 @@ uint8_t tecla_presionada();//retorna el valor de la tecla leida
 uint8_t tecla_deco();//decodifoca la tecla leida
 
 
-#endif /* LIBRERIAS_TECLADO_H_ */
+#endif /* keypad_X3_H_ */

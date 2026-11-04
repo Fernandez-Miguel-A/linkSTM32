@@ -5,8 +5,8 @@
  *      Author: alcid
  */
 
+#include <keypad_X3.h>
 #include "main.h"
-#include "Teclado.h"
 #include "stdbool.h"
 
 
@@ -21,8 +21,8 @@ uint8_t t_tecla1()
     HAL_GPIO_WritePin(D_GPIO_Port, D_Pin, state_bit);
 
     if (te_read0==!state_bit){
-        HAL_Delay(15);
-        while (te_read0==!state_bit);
+        HAL_Delay(15);					// Incorrecta administracion de las pulsaciones.
+        while (te_read0==!state_bit);   // Espera a que suelte la tecla.
         return 1;
     }
     else if (te_read1==!state_bit){

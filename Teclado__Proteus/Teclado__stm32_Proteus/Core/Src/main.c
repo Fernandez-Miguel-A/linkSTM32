@@ -23,11 +23,10 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include "lcd.h"
-#include "Teclado.h"
-
 #include "stdint.h"
 #include <ctype.h>
 #include <keypad_X2.h>
+#include <keypad_X3.h>
 #include "string.h"
 
 
