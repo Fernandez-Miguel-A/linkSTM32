@@ -54,8 +54,11 @@ uint8_t segment[10]={  //125
 
 /* Private variables ---------------------------------------------------------*/
 TIM_HandleTypeDef htim4;
+TIM_HandleTypeDef htim2;
 
 /* USER CODE BEGIN PV */
+
+static volatile uint16_t tim2_ms_ticks = 0, tim2_ms_ticks2 = 0;
 
 char txt3[] = "Lcd4bit:";
 char texto[] = "VIEJO PIC16F877A";     // Usando 'const' No muestra el texto
@@ -149,6 +152,7 @@ void retardo_teclado(uint32_t Delay)
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_TIM4_Init(void);
+static void MX_TIM2_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -188,18 +192,22 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_TIM4_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
 	
 	  HAL_TIM_Base_Start(&htim4);
 		__HAL_TIM_SetCounter(&htim4, 0);
+    if (HAL_TIM_Base_Start_IT(&htim2) != HAL_OK)
+    {
+      Error_Handler();
+    }
 		
 		
     //Keypad_Init();										// PUERTOA
     
-    Lcd_Init();                        // Initialize Lcd
-    Delay_ms(15);
-	
-	
+    Lcd_Init();       // Initialize Lcd
+    Delay_ms(15);     // aguarda a que el Lcd se estabilice
+
     Lcd_Clear(); //Lcd_Cmd(_LCD_CLEAR);               // Clear display
     Lcd_NoBlink(); //Lcd_Cmd(_LCD_CURSOR_OFF);          // Cursor off
     
@@ -239,19 +247,11 @@ int main(void)
 				 Lcd_Set_Cursor(2, 1);
 				 Lcd_Write_String(Txt);
 			} */
-
-			LED1(1);
-			Retardo_ms(retardo);     //retardo
-			LED1(0);
-			Retardo_ms(retardo);     //retardo
+      // retardo = 500; // modif retardo aqui Retardo_ms(retardo);
 		} while(!kp);
          
-    LED2(1);
-		Delay_ms(500);     //retardo
-		LED2(0);           
-		Delay_ms(500);     //retardo
-        
 		tecla = kp;
+    // Retardo 50 ms
 		
 		//Lcd_Chr(1,9,tecla);
 		if(tecla == '='){
@@ -308,6 +308,39 @@ int main(void)
 		
   }
   /* USER CODE END 3 */
+}
+
+/**
+  * @brief TIM2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM2_Init(void)
+{
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  htim2.Instance = TIM2;
+  htim2.Init.Prescaler = 8000 - 1;
+  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim2.Init.Period = 1 - 1;
+  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
 }
 
 /**
@@ -449,6 +482,25 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+static void FuncionCada500ms(void)
+{
+  HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
+}
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  if (htim->Instance == TIM2){
+      if (++tim2_ms_ticks >= 500){
+          tim2_ms_ticks = 0;
+          FuncionCada500ms();
+      } 
+      if (++tim2_ms_ticks2 >= 50){
+          tim2_ms_ticks2 = 0;
+          HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
+      }
+  }
+}
 
 /* USER CODE END 4 */
 
