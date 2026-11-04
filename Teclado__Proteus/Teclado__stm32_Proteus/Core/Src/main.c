@@ -269,35 +269,30 @@ int main(void)
 								 Lcd_Set_Cursor(1,11);
 								 Lcd_Write_Char(tecla);
 								 estado_teclado = E2;
-								 Delay_ms(400);
 								 break;          
 				case E2: retardo_s[1] = tecla; 
 								 retardo_s[2] = 0;
 								 Lcd_Set_Cursor(1,12);
 								 Lcd_Write_Char(tecla); 
 								 estado_teclado = E3;
-								 Delay_ms(400); 
 								 break;
 				case E3: retardo_s[2] = tecla;
 								 retardo_s[3] = 0;
 								 Lcd_Set_Cursor(1,13);
 								 Lcd_Write_Char(tecla); 
 								 estado_teclado = E4;
-								 Delay_ms(400);
 								 break;
 				case E4: retardo_s[3] = tecla;
 								 retardo_s[4] = 0;
 								 Lcd_Set_Cursor(1,14);
 								 Lcd_Write_Char(tecla);
 								 estado_teclado = Efin;
-								 Delay_ms(400);
 								 break;
 				case Efin:
 								 Lcd_Set_Cursor(1,11);
 								 Lcd_Write_String("    ");
 								 //retardo = StrToInt(retardo_s); 
 								 retardo_s[0] = 0;
-								 Delay_ms(600);
 								 estado_teclado = E1;
 								 break;
 		}
