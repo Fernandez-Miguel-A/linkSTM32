@@ -94,6 +94,10 @@ void Error_Handler(void);
 
 /* USER CODE BEGIN Private defines */
 
+#define 	Delay_ms		  HAL_Delay
+#define 	Retardo_ms		HAL_Delay
+#define 	__delay_ms		HAL_Delay
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

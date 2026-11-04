@@ -78,9 +78,6 @@ uint8_t estado_teclado= E1;
 //  == GPIO_PIN_SET
 
 
-#define 	Delay_ms		  HAL_Delay
-#define 	Retardo_ms		HAL_Delay
-#define 	__delay_ms		HAL_Delay
 
 
 
@@ -225,7 +222,7 @@ int main(void)
     /* USER CODE BEGIN 3 */
 		
 		do {  
-			kp = (char)Keypad_Get_Char_stm32();
+			kp = (char)tecla_deco();
 			if(!isdigit(c)){// && (atoi(c)>9)){
 					 c = '0';
 			}

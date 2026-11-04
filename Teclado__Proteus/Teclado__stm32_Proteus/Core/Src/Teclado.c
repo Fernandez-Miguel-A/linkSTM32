@@ -10,65 +10,81 @@
 #include "stdbool.h"
 
 
-bool res_=res;
+uint8_t state_bit=state;
 
 
 uint8_t t_tecla1()
 {
-   HAL_GPIO_WritePin(A_GPIO_Port, A_Pin, !res_);//activa solo la fila 1
-   HAL_GPIO_WritePin(B_GPIO_Port, B_Pin, res_);
-   HAL_GPIO_WritePin(C_GPIO_Port, C_Pin, res_);
-   HAL_GPIO_WritePin(D_GPIO_Port, D_Pin, res_);
+    HAL_GPIO_WritePin(A_GPIO_Port, A_Pin, !state_bit);//activa solo la fila 1
+    HAL_GPIO_WritePin(B_GPIO_Port, B_Pin, state_bit);
+    HAL_GPIO_WritePin(C_GPIO_Port, C_Pin, state_bit);
+    HAL_GPIO_WritePin(D_GPIO_Port, D_Pin, state_bit);
 
-     if (te_c1==!res_   ) return(1);
-     else if (te_c2==!res_) return(2);
-     else if (te_c3==!res_) return(3);
-    else if (te_c4==!res_) return(4);   //comentar si es 3*4
-    else return(0);
+    if (te_read0==!state_bit){
+        HAL_Delay(15);
+        while (te_read0==!state_bit);
+        return 1;
+    }
+    else if (te_read1==!state_bit){
+      Delay_ms(15);
+      while (te_read1==!state_bit);
+      return 2;
+    }
+    else if (te_read2==!state_bit){
+      Delay_ms(15);
+      while (te_read2==!state_bit);
+      return 3;
+    }
+    else if (te_read3==!state_bit){
+      Delay_ms(15);
+      while (te_read3==!state_bit);
+      return 4;
+    }
+    else return 0;
 }
 
 uint8_t t_tecla2()
 {
-   HAL_GPIO_WritePin(A_GPIO_Port, A_Pin, res_);
-   HAL_GPIO_WritePin(B_GPIO_Port, B_Pin, !res_);//activa solo la fila 2
-   HAL_GPIO_WritePin(C_GPIO_Port, C_Pin, res_);
-   HAL_GPIO_WritePin(D_GPIO_Port, D_Pin, res_);
+    HAL_GPIO_WritePin(A_GPIO_Port, A_Pin, state_bit);
+    HAL_GPIO_WritePin(B_GPIO_Port, B_Pin, !state_bit);//activa solo la fila 2
+    HAL_GPIO_WritePin(C_GPIO_Port, C_Pin, state_bit);
+    HAL_GPIO_WritePin(D_GPIO_Port, D_Pin, state_bit);
 
-     if (te_c1==!res_   ) return(5);
-     else if (te_c2==!res_) return(6);
-     else if (te_c3==!res_) return(7);
-    else if (te_c4==!res_) return(8);   //comentar si es 3*4
-    else return(0);
+    if (te_read0==!state_bit   ){Delay_ms(15); while (te_read0==!state_bit); return 5;}
+    else if (te_read1==!state_bit){Delay_ms(15); while (te_read1==!state_bit); return 6;}
+    else if (te_read2==!state_bit){Delay_ms(15); while (te_read2==!state_bit); return 7;}
+    else if (te_read3==!state_bit){Delay_ms(15); while (te_read3==!state_bit); return 8;}   //comentar si es 3*4
+    else return 0;
 }
 
 
 uint8_t t_tecla3()
 {
-   HAL_GPIO_WritePin(A_GPIO_Port, A_Pin, res_);
-   HAL_GPIO_WritePin(B_GPIO_Port, B_Pin, res_);
-   HAL_GPIO_WritePin(C_GPIO_Port, C_Pin, !res_);//activa solo la fila 3
-   HAL_GPIO_WritePin(D_GPIO_Port, D_Pin, res_);
+  HAL_GPIO_WritePin(A_GPIO_Port, A_Pin, state_bit);
+  HAL_GPIO_WritePin(B_GPIO_Port, B_Pin, state_bit);
+  HAL_GPIO_WritePin(C_GPIO_Port, C_Pin, !state_bit);//activa solo la fila 3
+  HAL_GPIO_WritePin(D_GPIO_Port, D_Pin, state_bit);
 
-     if (te_c1==!res_   ) return(9);
-     else if (te_c2==!res_) return(10);
-     else if (te_c3==!res_) return(11);
-    else if (te_c4==!res_) return(12);   //comentar si es 3*4
-    else return(0);
+  if (te_read0==!state_bit   ){Delay_ms(15); while (te_read0==!state_bit); return 9;}
+  else if (te_read1==!state_bit){Delay_ms(15); while (te_read1==!state_bit); return 10;}
+  else if (te_read2==!state_bit){Delay_ms(15); while (te_read2==!state_bit); return 11;}
+  else if (te_read3==!state_bit){Delay_ms(15); while (te_read3==!state_bit); return 12;}   //comentar si es 3*4
+  else return 0;
 }
 
 
 uint8_t t_tecla4()
 {
-   HAL_GPIO_WritePin(A_GPIO_Port, A_Pin, res_);
-   HAL_GPIO_WritePin(B_GPIO_Port, B_Pin, res_);
-   HAL_GPIO_WritePin(C_GPIO_Port, C_Pin, res_);
-   HAL_GPIO_WritePin(D_GPIO_Port, D_Pin, !res_);//activa solo la fila 3
+  HAL_GPIO_WritePin(A_GPIO_Port, A_Pin, state_bit);
+  HAL_GPIO_WritePin(B_GPIO_Port, B_Pin, state_bit);
+  HAL_GPIO_WritePin(C_GPIO_Port, C_Pin, state_bit);
+  HAL_GPIO_WritePin(D_GPIO_Port, D_Pin, !state_bit);//activa solo la fila 4
 
-     if (te_c1==!res_   ) return(13);
-     else if (te_c2==!res_) return(14);
-     else if (te_c3==!res_) return(15);
-    else if (te_c4==!res_) return(16);   //comentar si es 3*4
-    else return(0);
+  if (te_read0==!state_bit   ){Delay_ms(15); while (te_read0==!state_bit); return 13;}
+  else if (te_read1==!state_bit){Delay_ms(15); while (te_read1==!state_bit); return 14;}
+  else if (te_read2==!state_bit){Delay_ms(15); while (te_read2==!state_bit); return 15;}
+  else if (te_read3==!state_bit){Delay_ms(15); while (te_read3==!state_bit); return 16;}   //comentar si es 3*4
+  else return 0;
 }
 
 
@@ -79,13 +95,13 @@ uint8_t tecla_presionada()
 
   te=t_tecla1();
   if (te!=0) return (te);
-  HAL_Delay(5);
+  //HAL_Delay(5);
   te=t_tecla2();
   if (te!=0) return (te);
-  HAL_Delay(5);
+  //HAL_Delay(5);
   te=t_tecla3();
   if (te!=0) return (te);
-  HAL_Delay(5);
+  //HAL_Delay(5);
   te=t_tecla4();
   if (te!=0) return (te);
   return 0;
