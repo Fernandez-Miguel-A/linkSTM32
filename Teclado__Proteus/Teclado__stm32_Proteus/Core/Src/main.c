@@ -58,6 +58,7 @@ TIM_HandleTypeDef htim2;
 /* USER CODE BEGIN PV */
 
 static volatile uint16_t tim2_ms_ticks = 0, tim2_ms_ticks2 = 0;
+static volatile uint8_t systick_50ms_ticks = 0;
 
 char txt3[] = "Lcd4bit:";
 char texto[] = "VIEJO PIC16F877A";     // Usando 'const' No muestra el texto
@@ -499,14 +500,22 @@ static void FuncionCada_retardo_ms(void)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   if (htim->Instance == TIM2){
-      if (++tim2_ms_ticks >= 50){
+      /*if (++tim2_ms_ticks >= 50){
           tim2_ms_ticks = 0;
           HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
-      }
+      }*/
       if (++tim2_ms_ticks2 >= retardo){
           tim2_ms_ticks2 = 0;
           FuncionCada_retardo_ms();
       }
+  }
+}
+
+void HAL_SYSTICK_Callback(void)
+{
+  if (++systick_50ms_ticks >= 50U){
+    systick_50ms_ticks = 0;
+    HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
   }
 }
 
